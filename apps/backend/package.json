@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "start": "tsx index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -13,7 +14,11 @@
   "dependencies": {
     "@types/express": "^5.0.5",
     "db": "*",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2"
   }
 }

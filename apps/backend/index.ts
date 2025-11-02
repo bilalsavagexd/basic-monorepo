@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import { prismaClient } from "db/client";
 import type { User } from "db/client";
