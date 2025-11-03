@@ -1,0 +1,29 @@
+# Base-layer
+FROM node:18-alpine
+
+# Setting working directory
+WORKDIR /app
+
+# Copying the Package.json files for optimization
+COPY package.json package-lock.json ./ 
+COPY apps/backend/package.json ./apps/backend/
+COPY packages/db/package.json ./packages/db/
+
+# Install dependencies
+RUN npm ci
+
+# Copying Prisma Schema and Config
+COPY packages/db/prisma ./packages/db/prisma/
+COPY packages/db/prisma.config.ts   ./packages/db/
+
+# Generate Prisma Client
+RUN DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy" npm run generate:db
+
+COPY .  .
+
+EXPOSE 8080
+
+WORKDIR /app/apps/backend
+
+CMD ["npm", "start"]
+
