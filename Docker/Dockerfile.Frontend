@@ -1,0 +1,33 @@
+# Base-layer
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copying the Package.json files for optimization
+COPY package.json package-lock.json ./ 
+COPY apps/web/package.json ./apps/web/
+COPY packages/db/package.json ./packages/db/
+
+# Install dependencies
+RUN npm ci
+
+COPY ./packages ./packages
+
+# Generate Prisma Client
+RUN DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy" npm run generate:db
+
+COPY ./apps/web/ ./apps/web/
+
+# Build Next.js app
+WORKDIR /app/apps/web
+
+# In NextJs Frontend Databases Communication with the database during build stage,
+# That is why we have to pass our Production DATABASE_URL so that if can connect & communicate with the database,
+ARG DATABASE_URL 
+
+RUN DATABASE_URL=${DATABASE_URL} npm run build
+
+# Expose and start
+EXPOSE 3000
+CMD ["npm", "start"]
+
