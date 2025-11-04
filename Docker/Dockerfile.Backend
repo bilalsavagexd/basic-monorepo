@@ -19,11 +19,12 @@ COPY packages/db/prisma.config.ts   ./packages/db/
 # Generate Prisma Client
 RUN DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy" npm run generate:db
 
-COPY .  .
+COPY ./apps/backend/ ./apps/backend/
+COPY ./packages/db  ./packages/db/
 
 EXPOSE 8080
 
-WORKDIR /app/apps/backend
+WORKDIR /app/apps/backend/
 
 CMD ["npm", "start"]
 
