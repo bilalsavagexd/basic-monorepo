@@ -12,20 +12,17 @@ COPY packages/db/package.json ./packages/db/
 RUN npm ci
 
 COPY ./packages ./packages
+COPY ./apps/web/ ./apps/web/
 
 # Generate Prisma Client
 RUN DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy" npm run generate:db
 
-COPY ./apps/web/ ./apps/web/
-
 # Build Next.js app
 WORKDIR /app/apps/web
 
-# In NextJs Frontend Databases Communication with the database during build stage,
-# That is why we have to pass our Production DATABASE_URL so that if can connect & communicate with the database,
-ARG DATABASE_URL 
-
-RUN DATABASE_URL=${DATABASE_URL} npm run build
+# In NextJs Frontend Communicate with the database during build stage,
+# so I've added a line for it to not do that in page.tsx
+RUN npm run build
 
 # Expose and start
 EXPOSE 3000
