@@ -1,0 +1,12 @@
+## Build the docker code
+## Push the docker image to docker hub
+## SSH into out VM and pull & run the new image
+
+docker build -f Docker/Dockerfile.Backend -t monorepo-backend .
+
+docker push muhammadbilalhassan/basic-monorepo/monorepo-backend:latest
+
+docker pull muhammadbilalhassan/basic-monorepo/monorepo-backend:latest
+
+docker run -p 8080:8080 monorepo-backend
+

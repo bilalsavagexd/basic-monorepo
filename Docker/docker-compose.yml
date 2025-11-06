@@ -1,0 +1,67 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:16-alpine
+
+    ports:
+      -"5432:5432"
+
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  monorepo-backend:
+
+    build:
+      context: ..
+      
+      dockerfile: Docker/Dockerfile.Backend
+
+      environment:
+        - DATABASE_URL=postgres://postgres:mysecretpassword@postgres:5432/postgres
+
+      ports: 
+        - "8080:8080"
+
+      depends_on:
+        - postgres
+
+  monorepo-websocket:
+
+    build:
+      context: ..
+
+      dockerfile: Docker/DockerFile.Websocket
+
+      environment:
+        - DATABASE_URL=postgres://postgres:mysecretpassword@postgres:5432/postgres
+
+      ports: 
+        - "8081:8081"
+
+      depends_on:
+        - postgres
+
+  monorepo-frontend:
+
+    build:
+      context: ..
+
+      dockerfile: Docker/Dockerfile.Frontend
+
+      # environment:
+      #   # Only keep if your Next.js build/runtime needs it
+      #   - DATABASE_URL=postgres://postgres:mysecretpassword@postgres:5432/postgres
+      
+      ports: 
+        - "3000:3000"
+
+      depends_on:
+        - postgres
+
+volumes:
+  postgres_data:

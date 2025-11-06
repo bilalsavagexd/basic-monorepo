@@ -22,7 +22,7 @@ RUN DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy" npm run generat
 COPY ./apps/websocket/ ./apps/websocket/
 COPY ./packages/db  ./packages/db/
 
-EXPOSE 8080
+EXPOSE 8081
 
 WORKDIR /app/apps/websocket/
 
