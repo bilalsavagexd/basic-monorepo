@@ -4,7 +4,7 @@ on:
     branches: [main]
 jobs:
   build:
-    runs-on: ubuntu=latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2 #Clones codebase to ubuntu machine
