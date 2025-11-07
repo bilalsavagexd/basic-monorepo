@@ -21,4 +21,4 @@ jobs:
           context: .
           file: ./Docker/Dockerfile.Backend
           push: true
-          tags: /basic-monorepo/monorepo-backend:${{ github.sha  }}
+          tags: basic-monorepo/monorepo-backend:${{ github.sha  }}
