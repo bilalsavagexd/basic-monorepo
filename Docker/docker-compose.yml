@@ -50,9 +50,8 @@ services:
       context: ..
       dockerfile: Docker/Dockerfile.Frontend
 
-    # environment:
-    #   # Only keep if your Next.js build/runtime needs it
-    #   - DATABASE_URL=postgresql://postgres:mysecretpassword@postgres:5432/postgres
+    environment:
+      - DATABASE_URL=postgresql://postgres:mysecretpassword@postgres:5432/postgres
 
     ports:
       - "3000:3000"

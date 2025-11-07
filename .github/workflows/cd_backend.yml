@@ -1,12 +1,24 @@
-## Build the docker code
-## Push the docker image to docker hub
-## SSH into out VM and pull & run the new image
+name: Backend Deployment
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu=latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2 #Clones codebase to ubuntu machine
 
-docker build -f Docker/Dockerfile.Backend -t monorepo-backend .
-
-docker push muhammadbilalhassan/basic-monorepo/monorepo-backend:latest
-
-docker pull muhammadbilalhassan/basic-monorepo/monorepo-backend:latest
-
-docker run -p 8080:8080 monorepo-backend
-
+      - name: Docker login
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME  }}
+          password: ${{ secrets.DOCKERHUB_TOKEN  }}
+           
+      - name: Build and push # Builds and pushes the dockerfile to Dockerhub
+        uses: docker/build=push-action@v4
+        with:
+          context: .
+          file: ./Docker/Dockerfile.Backend
+          push: true
+          tags: /basic-monorepo/monorepo-backend:${{ github.sha  }}
